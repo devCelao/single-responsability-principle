@@ -1,0 +1,52 @@
+name: "Build & Test"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DOTNET_VERSION: "9.0.x"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore srp-solution.sln
+
+      - name: Build
+        run: dotnet build srp-solution.sln -c Release --no-restore
+
+      - name: Test com Coverage
+        run: |
+          dotnet test test-srp/test-srp.csproj \
+            -c Release --no-build --verbosity normal \
+            --collect:"XPlat Code Coverage" \
+            --settings coverlet.runsettings \
+            --results-directory TestResults
+
+      - name: Gerar relatorio de Coverage
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          reportgenerator \
+            "-reports:TestResults/**/coverage.cobertura.xml" \
+            "-targetdir:CoverageReport" \
+            "-reporttypes:TextSummary"
+
+      - name: Exibir Coverage
+        run: |
+          echo "## Relatorio de Code Coverage" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat CoverageReport/Summary.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat CoverageReport/Summary.txt
