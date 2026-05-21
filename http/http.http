@@ -1,0 +1,135 @@
+@baseUrl = http://localhost:5182/api
+
+### ========================================
+### PLAN ENDPOINTS
+### ========================================
+
+### Criar Plan
+POST {{baseUrl}}/plan
+Content-Type: application/json
+
+{
+    "name": "Plano Premium",
+    "price": 99.90
+}
+
+###
+
+### Listar todos os Plans
+GET {{baseUrl}}/plan
+Accept: application/json
+
+###
+
+### Buscar Plan por ID
+@planId = 00000000-0000-0000-0000-000000000000
+GET {{baseUrl}}/plan/{{planId}}
+Accept: application/json
+
+###
+
+### Atualizar Plan
+PUT {{baseUrl}}/plan/{{planId}}
+Content-Type: application/json
+
+{
+    "name": "Plano Premium Plus",
+    "price": 149.90
+}
+
+###
+
+### Deletar Plan
+DELETE {{baseUrl}}/plan/{{planId}}
+
+###
+
+### ========================================
+### SERVICE ENDPOINTS
+### ========================================
+
+### Criar Service
+POST {{baseUrl}}/service
+Content-Type: application/json
+
+{
+    "name": "API Gateway",
+    "type": "Infrastructure"
+}
+
+###
+
+### Buscar Service por ID
+@serviceId = 00000000-0000-0000-0000-000000000000
+GET {{baseUrl}}/service/{{serviceId}}
+Accept: application/json
+
+###
+
+### Buscar Services por Type
+@serviceType = Infrastructure
+GET {{baseUrl}}/service/type/{{serviceType}}
+Accept: application/json
+
+###
+
+### Atualizar Service
+PUT {{baseUrl}}/service/{{serviceId}}
+Content-Type: application/json
+
+{
+    "name": "API Gateway v2",
+    "type": "Infrastructure"
+}
+
+###
+
+### Deletar Service
+DELETE {{baseUrl}}/service/{{serviceId}}
+
+###
+
+### ========================================
+### FEATURE ENDPOINTS
+### ========================================
+
+### Criar Feature
+POST {{baseUrl}}/feature
+Content-Type: application/json
+
+{
+    "name": "Dashboard",
+    "permission": "view:dashboard"
+}
+
+###
+
+### Buscar Feature por ID
+@featureId = 00000000-0000-0000-0000-000000000000
+GET {{baseUrl}}/feature/{{featureId}}
+Accept: application/json
+
+###
+
+### Buscar Feature por Name
+@featureName = Dashboard
+GET {{baseUrl}}/feature/name/{{featureName}}
+Accept: application/json
+
+###
+
+### Atualizar Feature
+PUT {{baseUrl}}/feature/{{featureId}}
+Content-Type: application/json
+
+{
+    "name": "Dashboard Admin",
+    "permission": "admin:dashboard"
+}
+
+###
+
+### Deletar Feature
+DELETE {{baseUrl}}/feature/{{featureId}}
+
+###
